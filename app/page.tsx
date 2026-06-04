@@ -131,7 +131,7 @@ export default function Home() {
             href="#introduction"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-sm font-medium hover:bg-sky-500/20 transition-all"
           >
-            Read the write-up ↓
+            Learn more ↓
           </a>
         </div>
       </section>
