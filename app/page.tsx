@@ -219,7 +219,7 @@ export default function Home() {
             <CoefChart />
 
             <Callout color="emerald">
-              The two strongest signals are <strong>ALL-CAPS ratio</strong> (β = +1.991) and <strong>exclamation ratio</strong> (β = +1.864) for fake, and <strong>attribution ratio</strong> (β = −1.210) for real — confirming that sourced journalism is the dominant discriminating feature.
+              The two strongest fake signals are <strong>fake signal words</strong> (β = +2.386) — words statistically proven to appear more in fake news via log-odds — and <strong>ALL-CAPS ratio</strong> (β = +2.241). The strongest real signal is <strong>real signal words</strong> (β = −1.787), words proven to appear more in real journalism.
             </Callout>
           </Card>
         </section>
