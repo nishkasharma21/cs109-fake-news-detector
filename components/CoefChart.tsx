@@ -1,20 +1,24 @@
+// Coefficients from logistic regression trained on 44,898 ISOT articles
+// Features: entropy, entropy_norm, kl_divergence, fake_signal_ratio,
+//           real_signal_ratio, clickbait_count, vague_count,
+//           conspiracy_count, credible_count, type_token_ratio,
+//           caps_ratio, excl_ratio
 const COEFS = [
-  { name: "caps_ratio",          coef:  1.991, label: "ALL-CAPS ratio" },
-  { name: "excl_ratio",          coef:  1.864, label: "Exclamation ratio" },
-  { name: "attribution_ratio",   coef: -1.210, label: "Attribution verbs" },
-  { name: "entropy",             coef:  0.598, label: "Shannon entropy" },
-  { name: "emotional_ratio",     coef:  0.569, label: "Emotional language" },
-  { name: "entropy_norm",        coef: -0.447, label: "Normalised entropy" },
-  { name: "clickbait_count",     coef:  0.289, label: "Clickbait patterns" },
-  { name: "vague_count",         coef:  0.228, label: "Vague sourcing" },
-  { name: "conspiracy_count",    coef:  0.197, label: "Conspiracy language" },
-  { name: "type_token_ratio",    coef:  0.197, label: "Type-token ratio" },
-  { name: "kl_divergence",       coef:  0.184, label: "KL divergence" },
-  { name: "credible_count",      coef: -0.177, label: "Credible citations" },
-  { name: "factual_ratio",       coef: -0.160, label: "Factual terms" },
+  { name: "fake_signal_ratio", coef:  2.386, label: "Fake signal words" },
+  { name: "caps_ratio",        coef:  2.241, label: "ALL-CAPS ratio" },
+  { name: "real_signal_ratio", coef: -1.787, label: "Real signal words" },
+  { name: "kl_divergence",     coef:  0.702, label: "KL divergence" },
+  { name: "entropy",           coef:  0.784, label: "Entropy" },
+  { name: "clickbait_count",   coef:  0.168, label: "Clickbait patterns" },
+  { name: "vague_count",       coef:  0.003, label: "Vague sourcing" },
+  { name: "conspiracy_count",  coef:  0.118, label: "Conspiracy language" },
+  { name: "type_token_ratio",  coef: -0.083, label: "Type-token ratio" },
+  { name: "credible_count",    coef: -0.038, label: "Credible citations" },
+  { name: "entropy_norm",      coef: -0.223, label: "Normalised entropy" },
+  { name: "excl_ratio",        coef:  0.040, label: "Exclamation ratio" },
 ];
 
-const MAX = 2.1;
+const MAX = 2.5;
 
 export default function CoefChart() {
   return (

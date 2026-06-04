@@ -115,10 +115,10 @@ export default function Home() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-14">
             {[
-              { val: "82.6%",  label: "Accuracy",     color: "text-emerald-400" },
-              { val: "0.905",  label: "AUC-ROC",       color: "text-sky-400"     },
+              { val: "92.5%",  label: "Accuracy",     color: "text-emerald-400" },
+              { val: "0.980",  label: "AUC-ROC",       color: "text-sky-400"     },
               { val: "44,898", label: "Training arts.", color: "text-indigo-400"  },
-              { val: "13",     label: "Features",      color: "text-amber-400"   },
+              { val: "12",     label: "Features",      color: "text-amber-400"   },
             ].map(({ val, label, color }) => (
               <div key={label} className="rounded-xl border border-[#1e3350] bg-[#0f1d2e]/70 p-4">
                 <div className={`text-2xl md:text-3xl font-bold font-[var(--font-mono)] ${color}`}>{val}</div>
@@ -234,8 +234,8 @@ export default function Home() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               {[
-                { val: "82.6%", label: "Accuracy",    sub: "test set",  color: "text-emerald-400 border-emerald-500/30 bg-emerald-950/20" },
-                { val: "0.905", label: "AUC-ROC",     sub: "test set",  color: "text-sky-400 border-sky-500/30 bg-sky-950/20" },
+                { val: "92.5%", label: "Accuracy",    sub: "test set",  color: "text-emerald-400 border-emerald-500/30 bg-emerald-950/20" },
+                { val: "0.980", label: "AUC-ROC",     sub: "test set",  color: "text-sky-400 border-sky-500/30 bg-sky-950/20" },
                 { val: "0.83",  label: "F1 (Fake)",   sub: "test set",  color: "text-indigo-400 border-indigo-500/30 bg-indigo-950/20" },
                 { val: "0.82",  label: "F1 (Real)",   sub: "test set",  color: "text-violet-400 border-violet-500/30 bg-violet-950/20" },
               ].map(({ val, label, sub, color }) => (
