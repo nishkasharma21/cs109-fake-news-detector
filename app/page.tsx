@@ -204,7 +204,7 @@ export default function Home() {
               description="Navigate to any news article — try Reuters or AP for a high-credibility baseline, then compare with a known low-credibility site. Click the ⚡ icon in your toolbar to see the full analysis."
             />
             <Callout color="sky">
-              <strong>Tip:</strong> For the strongest contrast, open an AP News article (<code className="font-[var(--font-mono)] text-xs">apnews.com</code>) and compare its score with an article from a known misinformation site. The attribution ratio and caps/exclamation signals will diverge dramatically.
+              <strong>Tip:</strong> For the strongest contrast, open a Reuters article (<code className="font-[var(--font-mono)] text-xs">reuters.com</code>) — the model was trained on Reuters as its real-news ground truth — and compare it with an article from a PolitiFact-flagged site, which the fake training data was sourced from.
             </Callout>
           </Card>
         </section>
