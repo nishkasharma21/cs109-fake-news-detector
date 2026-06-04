@@ -105,7 +105,7 @@ export default function Home() {
           </h1>
 
           <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-4 leading-8">
-            Using Shannon entropy and KL divergence to detect fake news — and building a Chrome extension that scores every article you read.
+            Using entropy and KL divergence to detect fake news — and building a Chrome extension that scores every article you read.
           </p>
 
           <p className="text-slate-500 text-sm mb-12">

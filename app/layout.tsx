@@ -8,7 +8,7 @@ const mono     = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", d
 
 export const metadata: Metadata = {
   title: "From Bits to Bias | CS109 · Stanford",
-  description: "Using Shannon entropy and KL divergence to detect fake news — CS109 project by Nishka Sharma.",
+  description: "Using entropy and KL divergence to detect fake news — CS109 project by Nishka Sharma.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
