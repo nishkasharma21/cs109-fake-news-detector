@@ -147,9 +147,6 @@ export default function Home() {
             </span>
           </div>
           <div className="rounded-2xl overflow-hidden border border-[#1e3350] bg-[#0f1d2e]/80">
-            {/* Replace the src below with your actual YouTube embed URL:
-                e.g. https://www.youtube.com/embed/YOUR_VIDEO_ID
-                or a Loom embed URL */}
             <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
               <iframe
                 className="absolute inset-0 w-full h-full"
@@ -161,13 +158,13 @@ export default function Home() {
             </div>
             <div className="px-6 py-4 border-t border-[#1e3350]">
               <p className="text-sm text-slate-400">
-                Full walkthrough of the Chrome extension on a live Reuters article vs. a low-credibility source — showing the entropy, KL divergence, and logistic regression score in action.
+                Full walkthrough of the Chrome extension on a live Reuters article vs. a low-credibility source.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Install Guide — moved to top */}
+        {/* Install Guide */}
         <section id="install">
           <Card className="border-sky-800/40 glow-blue">
             <SectionLabel n="★">Install the Chrome Extension</SectionLabel>
@@ -212,140 +209,10 @@ export default function Home() {
           </Card>
         </section>
 
-        {/* Introduction */}
-        <section id="introduction">
-          <Card>
-            <SectionLabel n="01">Introduction</SectionLabel>
-            <p className="text-slate-300 leading-8 mb-4">
-              Every day, millions of people encounter news articles online. Some are accurate, well-sourced journalism. Others are deliberately misleading, emotionally manipulative, or outright false. The problem of distinguishing the two is harder than it sounds — a sophisticated fake news article can be written in calm, professional prose with no obvious red flags.
-            </p>
-            <p className="text-slate-300 leading-8">
-              This project asks a specific question:{" "}
-              <em className="text-sky-300">
-                can we use information theory — specifically Shannon entropy and KL divergence — to quantify the stylistic difference between fake and real news?
-              </em>{" "}
-              And once we identify those signals, can we combine them into a calibrated probabilistic model that outputs a credibility score? The answer, supported by 44,898 labeled articles, is yes — with important caveats about what this approach can and cannot detect.
-            </p>
-          </Card>
-        </section>
-
-        {/* Background */}
-        <section id="background">
-          <Card>
-            <SectionLabel n="02">Background</SectionLabel>
-            <p className="text-slate-300 leading-8 mb-6">
-              Fake news does not always look fake. Research in computational linguistics shows that misinformation tends to differ from legitimate journalism not in its topic, but in its <em className="text-slate-200">style</em>. Fake articles are more likely to use emotional or fear-inducing language, rely on vague attribution (&ldquo;some experts say&rdquo;), repeat key terms obsessively, and lack the sourcing language (&ldquo;confirmed,&rdquo; &ldquo;according to,&rdquo; &ldquo;the study found&rdquo;) that characterises careful journalism.
-            </p>
-            <p className="text-slate-300 leading-8 mb-6">
-              These stylistic differences are measurable using information-theoretic tools. Shannon entropy, from Claude Shannon&rsquo;s foundational 1948 paper, measures the unpredictability of a probability distribution. Applied to text, it captures vocabulary diversity. KL divergence measures how much one distribution differs from another — in our case, how far an article&rsquo;s language style diverges from what we&rsquo;d expect from neutral, balanced news.
-            </p>
-            <Callout color="sky">
-              <strong>Dataset:</strong> We train and evaluate on the <strong>ISOT Fake News Dataset</strong> — 21,417 real articles from Reuters and 23,481 fake articles from sources flagged by PolitiFact, totalling 44,898 labelled examples.
-            </Callout>
-          </Card>
-        </section>
-
-        {/* Shannon Entropy */}
-        <section id="entropy">
-          <Card>
-            <SectionLabel n="03">Shannon Entropy as a Credibility Signal</SectionLabel>
-            <p className="text-slate-300 leading-8 mb-4">
-              Shannon entropy for a discrete random variable <MathBlock formula="X" /> is defined as:
-            </p>
-            <MathBlock formula="H(X) = -\sum_{i} p_i \log_2 p_i" display />
-            <p className="text-slate-300 leading-8 mb-4">
-              where <MathBlock formula="p_i" /> is the probability of observing word <MathBlock formula="i" /> in the article. For a document, we treat each content word as a draw from the article&rsquo;s word distribution, and compute <MathBlock formula="H" /> over the normalised word frequencies.
-            </p>
-            <p className="text-slate-300 leading-8 mb-4">
-              Intuitively: a document where every word appears exactly once has maximum entropy. A propaganda piece that hammers the same three terms — &ldquo;corrupt,&rdquo; &ldquo;regime,&rdquo; &ldquo;enemies&rdquo; — has low entropy, because the next word is highly predictable.
-            </p>
-            <p className="text-slate-300 leading-8 mb-4">
-              To make entropy comparable across articles of different lengths, we normalise by the maximum possible entropy for a vocabulary of size <MathBlock formula="V" />:
-            </p>
-            <MathBlock formula="H_{\text{norm}} = \frac{H(X)}{\log_2 V}" display />
-            <Callout color="emerald">
-              Across the ISOT dataset, real articles cluster between <MathBlock formula="H_{\text{norm}} \in [0.90,\, 0.98]" />, while fake articles show a wider spread with a longer tail toward lower values — consistent with the hypothesis that fake news uses more repetitive language.
-            </Callout>
-            <Callout color="amber">
-              <strong>Limitation:</strong> Entropy alone is insufficient. A well-written fake article with varied vocabulary will score identically to a real article on this metric alone.
-            </Callout>
-          </Card>
-        </section>
-
-        {/* KL Divergence */}
-        <section id="kl">
-          <Card>
-            <SectionLabel n="04">KL Divergence from Balanced News</SectionLabel>
-            <p className="text-slate-300 leading-8 mb-4">
-              We define a reference distribution <MathBlock formula="Q" /> representing how content words are distributed in neutral, well-sourced journalism. Rather than working over the full vocabulary, we collapse words into five <em className="text-slate-200">style categories</em>:
-            </p>
-
-            {/* Table */}
-            <div className="overflow-x-auto my-6">
-              <table className="w-full text-sm border-collapse">
-                <thead>
-                  <tr className="border-b border-[#1e3350]">
-                    <th className="text-left py-3 px-4 text-slate-400 font-semibold">Category</th>
-                    <th className="text-left py-3 px-4 text-slate-400 font-semibold">Example words</th>
-                    <th className="text-right py-3 px-4 text-slate-400 font-semibold">Ref. proportion</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    ["Attribution",  '"said", "reported", "confirmed"',   "14%"],
-                    ["Factual",      '"data", "percent", "research"',     "10%"],
-                    ["Emotional",    '"terrifying", "outrage", "evil"',   "2%"],
-                    ["Loaded",       '"regime", "propaganda", "coverup"', "1%"],
-                    ["Neutral",      "all other content words",           "73%"],
-                  ].map(([cat, ex, ref], i) => (
-                    <tr key={cat} className={`border-b border-[#1e3350]/50 ${i % 2 === 0 ? "bg-[#080f1a]/30" : ""}`}>
-                      <td className="py-3 px-4 text-slate-200 font-medium">{cat}</td>
-                      <td className="py-3 px-4 text-slate-400 font-[var(--font-mono)] text-xs">{ex}</td>
-                      <td className="py-3 px-4 text-right text-sky-400 font-[var(--font-mono)]">{ref}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <p className="text-slate-300 leading-8 mb-4">
-              For any article, we compute its empirical category distribution <MathBlock formula="P" /> and measure the KL divergence from the reference:
-            </p>
-            <MathBlock formula="D_{KL}(P \| Q) = \sum_{c} P(c) \ln \frac{P(c)}{Q(c)}" display />
-            <p className="text-slate-300 leading-8 mb-4">
-              KL divergence is always non-negative (by Gibbs&rsquo; inequality) and equals zero only when <MathBlock formula="P = Q" />. A neutral Reuters article produces <MathBlock formula="D_{KL} \approx 0.01\text{–}0.05" />. An article heavy in emotional language with few attribution verbs produces <MathBlock formula="D_{KL} > 0.3" />.
-            </p>
-            <Callout color="sky">
-              <strong>Key insight:</strong> Attribution ratio is the single most predictive feature. An article with 2% attribution verbs when 14% is expected contributes{" "}
-              <MathBlock formula="0.02 \times \ln(0.02/0.14) \approx -0.039 \text{ nats}" />{" "}
-              to the KL sum — a measurable, interpretable penalty. This makes KL divergence not just a number but an <em>explanation</em>.
-            </Callout>
-          </Card>
-        </section>
-
-        {/* Logistic Regression */}
+        {/* Learned Coefficients */}
         <section id="model">
           <Card>
-            <SectionLabel n="05">Logistic Regression: Combining Signals</SectionLabel>
-            <p className="text-slate-300 leading-8 mb-4">
-              Entropy and KL divergence alone achieve moderate separation between classes. To combine them with other stylometric signals into a single calibrated probability, we use logistic regression over 13 features:
-            </p>
-            <MathBlock
-              formula="\mathbf{x} = [\,H,\; H_{\text{norm}},\; D_{KL},\; \text{emotional},\; \text{attribution},\; \text{factual},\; \text{clickbait},\; \text{vague},\; \text{conspiracy},\; \text{credible},\; \text{TTR},\; \text{caps},\; \text{excl}\,]"
-              display
-            />
-            <p className="text-slate-300 leading-8 mb-4">
-              The model outputs a probability via the sigmoid function:
-            </p>
-            <MathBlock
-              formula="P(\text{fake} \mid \mathbf{x}) = \sigma\!\left(\beta_0 + \sum_{j=1}^{13} \beta_j \cdot \frac{x_j - \mu_j}{\sigma_j}\right) = \frac{1}{1 + e^{-z}}"
-              display
-            />
-            <p className="text-slate-300 leading-8 mb-6">
-              Each feature is standardised by its training mean <MathBlock formula="\mu_j" /> and standard deviation <MathBlock formula="\sigma_j" />. The extension reports <MathBlock formula="(1 - P(\text{fake})) \times 100" /> as the credibility score.
-            </p>
-
-            <h3 className="font-semibold text-slate-200 mb-4 text-lg">Learned Coefficients</h3>
+            <SectionLabel n="01">Learned Coefficients</SectionLabel>
             <p className="text-slate-400 text-sm mb-6 leading-6">
               Trained on 35,082 articles (80% of ISOT). Positive coefficient = fake signal. Negative = real signal. Bar length proportional to standardised weight.
             </p>
@@ -434,43 +301,9 @@ export default function Home() {
           </Card>
         </section>
 
-        {/* Conclusion */}
-        <section id="conclusion">
-          <Card className="border-indigo-800/40">
-            <SectionLabel n="08">Conclusion</SectionLabel>
-            <p className="text-slate-300 leading-8 mb-4">
-              Fake news differs from real journalism not just in content but in measurable statistical patterns. Shannon entropy captures vocabulary repetition. KL divergence from a reference style distribution identifies the absence of attribution language and the presence of emotional amplification. Logistic regression learned, from 44,898 labelled examples, that the single strongest predictor of fake news is not clickbait or conspiracy language — it is the <em className="text-slate-100">absence of attribution verbs</em>.
-            </p>
-            <p className="text-slate-300 leading-8">
-              Every time a real journalist writes &ldquo;she said&rdquo; or &ldquo;according to official data,&rdquo; they are reducing the KL divergence from neutral news and increasing the credibility signal. The result is a model that achieves 82.6% accuracy and 0.905 AUC — meaningfully better than chance, practically useful as a first-pass filter, and transparent enough to explain every score it gives.
-            </p>
-          </Card>
-        </section>
-
-        {/* References */}
-        <section id="references">
-          <h2 className="font-[var(--font-playfair)] text-xl text-slate-500 mb-4">References</h2>
-          <ul className="space-y-2 text-sm text-slate-500">
-            {[
-              "Shannon, C. E. (1948). A Mathematical Theory of Communication. Bell System Technical Journal.",
-              "Kullback, S. & Leibler, R. A. (1951). On Information and Sufficiency. Annals of Mathematical Statistics.",
-              "Ahmed, H., Traore, I. & Saad, S. (2017). Detection of Online Fake News Using N-Gram Analysis and Machine Learning. ISOT Dataset.",
-              "Pérez-Rosas, V. et al. (2018). Automatic Detection of Fake News. COLING 2018.",
-              "PolitiFact Truth-O-Meter — politifact.com",
-              "Snopes Fact-Check Database — snopes.com/fact-check",
-            ].map((ref) => (
-              <li key={ref} className="flex gap-2">
-                <span className="text-sky-700 mt-0.5 shrink-0">—</span>
-                <span>{ref}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
         {/* Footer */}
         <footer className="text-center text-xs text-slate-600 pt-8 border-t border-[#1e3350]">
           <p>Nishka Sharma · CS109 · Stanford University</p>
-          <p className="mt-1">Built with Next.js, Tailwind CSS, and KaTeX</p>
         </footer>
       </div>
     </>
